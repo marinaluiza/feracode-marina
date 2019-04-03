@@ -6,13 +6,20 @@ import {
 const initialState = {
     username: '',
     profileUrl: '',
-    coverUrl: ''
+    coverUrl: '',
+    fileCover: '',
+    fileProfile: ''
 };
 
 export default function UserInfoReducer(state = initialState, action) {
     switch (action.type) {
         case LOAD_USER_INFO:
-            return {...state, username: action.payload.username};
+            return {
+                ...state,
+                username: action.payload.username,
+                fileCover: action.payload.fileCover,
+                fileProfile: action.payload.fileProfile
+            };
         case CHANGE_USERNAME:
             return {...state, username: action.payload};
         case UPDATE_PROFILE_PICTURE:

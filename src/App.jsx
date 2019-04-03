@@ -2,15 +2,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ProfilePicture from "./components/ProfilePicture";
 import PostsList from "./components/PostsList";
-import {loadUserInfo, loadProfilePicture, loadCoverPhoto} from "./actions/index";
+import {loadUserInfo} from "./actions/index";
 import CoverPhoto from "./components/CoverPhoto";
 
 class App extends Component {
     componentDidMount() {
         this.props.loadUserInfo();
-        this.props.loadProfilePicture();
-        this.props.loadCoverPhoto();
     }
+
     render() {
         return(
             <div className="container">
@@ -24,4 +23,4 @@ class App extends Component {
     }
 }
 
-export default connect(null, {loadUserInfo, loadProfilePicture, loadCoverPhoto})(App);
+export default connect(null, {loadUserInfo})(App);

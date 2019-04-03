@@ -4,7 +4,6 @@ import FileUploader from 'react-firebase-file-uploader';
 import {connect} from 'react-redux';
 import {
     handleUploadStart,
-    handleProgress,
     handleUploadSuccess,
     handleUploadError,
     setUsername,
@@ -21,10 +20,6 @@ class ProfilePicture extends Component {
 
     handleUploadStart() {
         this.props.handleUploadStart();
-    }
-
-    handleProgress(progress) {
-        this.props.handleProgress(progress)
     }
 
     handleUploadError(error) {
@@ -64,6 +59,16 @@ class ProfilePicture extends Component {
 
     }
 
+    loading() {
+        if (this.props.isUploading) {
+            return (
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            );
+        }
+    }
+
     render() {
         return (
             <div className="col col-lg-3">
@@ -74,26 +79,23 @@ class ProfilePicture extends Component {
                              className="img-thumbnail img-fluid"/>
 
                         <div className="card-img-overlay">
-
                             <label className="label-file">
                                 <FontAwesomeIcon icon="camera" className="icon"/>
                                 <FileUploader
                                     hidden
                                     accept="image/*"
                                     name="profile"
-                                    filename="feracode-profile-picture"
                                     storageRef={firebase.storage().ref('images/profile')}
                                     onUploadStart={this.handleUploadStart.bind(this)}
                                     onUploadError={this.handleUploadError.bind(this)}
                                     onUploadSuccess={this.handleUploadSuccess.bind(this)}
-                                    onProgress={this.handleProgress.bind(this)}
                                 />
                             </label>
-
                         </div>
                     </form>
 
                 </div>
+                {this.loading()}
                 {this.renderUsername()}
 
             </div>
@@ -103,13 +105,12 @@ class ProfilePicture extends Component {
 
 const mapStateToProps = state => {
     const {profileUrl, username} = state.userInfo;
-    const {isUploading, progress, error} = state.profilePicture;
-    return {profileUrl, isUploading, progress, error, username};
+    const {isUploading, error} = state.profilePicture;
+    return {profileUrl, isUploading, error, username};
 };
 
 export default connect(mapStateToProps, {
     handleUploadStart,
-    handleProgress,
     handleUploadSuccess,
     handleUploadError,
     setUsername,

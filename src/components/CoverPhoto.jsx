@@ -5,7 +5,6 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import FileUploader from "react-firebase-file-uploader";
 import firebase from "../firebase";
 import {
-    handleCoverProgress,
     handleUploadCoverError,
     handleUploadCoverSuccess,
     handleUploadCoverStart
@@ -17,10 +16,6 @@ class CoverPhoto extends Component {
         this.props.handleUploadCoverStart();
     }
 
-    handleProgress(progress) {
-        this.props.handleCoverProgress(progress)
-    }
-
     handleUploadError(error) {
         this.props.handleUploadCoverError(error);
     }
@@ -29,29 +24,41 @@ class CoverPhoto extends Component {
         this.props.handleUploadCoverSuccess(filename);
     }
 
+    loading() {
+        if (this.props.isUploading) {
+            return (
+                <div className="spinner-border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            );
+        }
+    }
+
     render() {
         return (
-            <div className="card bg-light">
-                <form>
-                    <img src={this.props.coverUrl ? this.props.coverUrl : coverDefault} alt={"cover"} className="cover-photo"/>
+            <div>
+                <div className="card bg-light">
+                    <form>
+                        <img src={this.props.coverUrl ? this.props.coverUrl : coverDefault} alt={"cover"}
+                             className="cover-photo"/>
 
-                    <div className="card-img-overlay">
-                        <label className="label-file">
-                            <FontAwesomeIcon icon="camera" className="icon"/>
-                            <FileUploader
-                                hidden
-                                accept="image/*"
-                                name="profile"
-                                filename="feracode-cover-picture"
-                                storageRef={firebase.storage().ref('images/cover')}
-                                onUploadStart={this.handleUploadStart.bind(this)}
-                                onUploadError={this.handleUploadError.bind(this)}
-                                onUploadSuccess={this.handleUploadSuccess.bind(this)}
-                                onProgress={this.handleProgress.bind(this)}
-                            />
-                        </label>
-                    </div>
-                </form>
+                        <div className="card-img-overlay">
+                            <label className="label-file">
+                                <FontAwesomeIcon icon="camera" className="icon"/>
+                                <FileUploader
+                                    hidden
+                                    accept="image/*"
+                                    name="profile"
+                                    storageRef={firebase.storage().ref('images/cover')}
+                                    onUploadStart={this.handleUploadStart.bind(this)}
+                                    onUploadError={this.handleUploadError.bind(this)}
+                                    onUploadSuccess={this.handleUploadSuccess.bind(this)}
+                                />
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                {this.loading()}
             </div>
         );
     }
@@ -59,8 +66,12 @@ class CoverPhoto extends Component {
 
 const mapStateToProps = state => {
     const {coverUrl, username} = state.userInfo;
-    const {isUploading, progress, error} = state.coverPhoto;
-    return {coverUrl, isUploading, progress, error, username};
+    const {isUploading, error} = state.coverPhoto;
+    return {coverUrl, isUploading, error, username};
 };
 
-export default connect(mapStateToProps, {handleUploadCoverSuccess, handleUploadCoverStart, handleUploadCoverError, handleCoverProgress})(CoverPhoto);
+export default connect(mapStateToProps, {
+    handleUploadCoverSuccess,
+    handleUploadCoverStart,
+    handleUploadCoverError
+})(CoverPhoto);

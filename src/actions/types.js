@@ -1,11 +1,9 @@
 export const LIST_POSTS_SUCCESS = "list_posts_success";
 export const LOAD_USER_INFO = "load_user_info";
 export const UPLOAD_START = "upload_start";
-export const IN_PROGRESS = "in_progress";
 export const UPLOAD_ERROR = "upload_error";
 export const UPDATE_PROFILE_PICTURE = "update_profile_picture";
 export const UPDATE_COVER_PHOTO = "update_cover_photo";
 export const CHANGE_USERNAME = "change_username";
 export const UPLOAD_START_COVER = "upload_start_cover";
-export const IN_PROGRESS_COVER = "in_progress_cover";
 export const UPLOAD_ERROR_COVER = "upload_error_cover";
